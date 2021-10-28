@@ -8,19 +8,22 @@ class App extends Component{
     super(props);
     this.state = {
       numero: 0,
-      botao: 'VAI'
+      botao: 'VAI',
+      ultimo: 0,
+      limpar: false
     }
     this.timer  = null;
     this.limpar = this.limpar.bind(this);
     this.vai = this.vai.bind(this);
   }
   vai(){
+    this.state.limpar = true;
     if(this.timer != null){
       // parar o timer
       clearInterval(this.timer);
       this.timer = null;
       this.setState({
-        botao : 'VAI'
+        botao : 'CONTINUAR'
       })
     }else{
       this.setState({
@@ -34,7 +37,18 @@ class App extends Component{
       }
   }
   limpar(){
-    alert('VAI2')
+    if(this.state.limpar){
+      this.setState({
+        numero: 0,
+        botao : 'VAI',
+        ultimo: this.state.numero
+      })
+      clearInterval(this.timer);
+    }else{
+      this.setState({
+        ultimo:0
+      })
+    }
   }
 
   render(){
@@ -52,6 +66,9 @@ class App extends Component{
             <Text style={styles.btnTexto}>LIMPAR</Text>
           </TouchableOpacity>
         </View>
+        <Text style={styles.ultimo}>
+          {this.state.ultimo > 0 ? "Ultimo tempo: "+this.state.ultimo.toFixed(1): ""}
+        </Text>
       </View>
     );
   }
@@ -61,7 +78,7 @@ class App extends Component{
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#00aeef',
+    backgroundColor: '#242BA6',
     alignItems: 'center',
     justifyContent: 'center',
 
@@ -95,7 +112,13 @@ const styles = StyleSheet.create({
   btnTexto:{
     fontWeight: 'bold',
     fontSize: 20,
-    color:'#00aeef'
+    color:'#242BA6'
+  },
+  ultimo:{
+    marginTop: 30,
+    color: 'white',
+    fontSize: 30,
+    fontWeight: "bold"
   }
 });
 export default App;
